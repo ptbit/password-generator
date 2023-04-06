@@ -1,0 +1,13 @@
+html,
+body {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  height: 100%;
+}
+h1 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  user-select: none;
+  text-align: center;
+}
