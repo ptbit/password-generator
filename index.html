@@ -15,31 +15,30 @@
         <label class="generated-label" for="password-generator-display-field"
           >Generated password:</label
         >
-        <input
-          id="password-generator-display-field"
-          class="generated-input"
-          value=""
-          spellcheck="false"
-          type="text" />
+        <div id="password-generator-display-field" class="generated-input"></div>
         <button class="generated-copy">Copy</button>
       </div>
       <div class="password-settings">
         <div class="length-settings">
-          <label class="generated-label" for="password-length">Password length:</label>
-          <span id="password-length"></span>
-          <button class="button-minus">-</button>
-          <input id="password-range" type="range" step="1" min="1" max="50" />
-          <button class="button-plus">+</button>
+          <div class="length-settings-top">
+            <label class="generated-label" for="password-length">Password length:</label>
+            <span id="password-length"></span>
+          </div>
+          <div class="length-settings-bottom">
+            <button class="button-minus">-</button>
+            <input id="password-range" type="range" step="1" min="1" max="50" />
+            <button class="button-plus">+</button>
+          </div>
         </div>
 
         <div class="complexity-settings">
-          <span>Characters used: </span>
+          <span class="settings-title">Characters used: </span>
           <div class="custom-checkbox">
-            <input type="checkbox" id="uppercase" checked/>
+            <input type="checkbox" id="uppercase" checked />
             <label for="uppercase">ABC</label>
           </div>
           <div class="custom-checkbox">
-            <input type="checkbox" id="lowercase" checked/>
+            <input type="checkbox" id="lowercase" checked />
             <label for="lowercase">abc</label>
           </div>
           <div class="custom-checkbox">
