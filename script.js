@@ -1,28 +1,55 @@
-let body = document.querySelector("body");
-let generatedPassword = document.getElementById("GENERATED-PASSWORD");
-let passwordLength = document.getElementById("password-length");
-let passwordRange = document.getElementById("password-range");
+const passwordLengthSpan = document.getElementById("password-length");
+const passwordRangeInput = document.getElementById("password-range");
+const lengthMinusBtn = document.querySelector(".button-minus");
+const lengthPlusBtn = document.querySelector(".button-plus");
+const generatedPassword = document.getElementById("password-generator-display-field");
 
+lengthMinusBtn.addEventListener("click", () => changePasswordLength("-"));
+lengthPlusBtn.addEventListener("click", () => changePasswordLength("+"));
 
+passwordLengthSpan.innerText = passwordRangeInput.value;
+passwordRangeInput.addEventListener("input", changeInputRangeHandler);
 
+function changePasswordLength(e) {
+  if (e === "-") {
+    passwordRangeInput.value--;
+  } else {
+    passwordRangeInput.value++;
+  }
+  passwordLengthSpan.innerText = passwordRangeInput.value;
+  generatePassword(passwordRangeInput.value);
+}
 
-passwordLength.addEventListener('click', clickHandler)
-passwordRange.addEventListener('click', clickHandler)
+function changeInputRangeHandler(e) {
+  passwordLengthSpan.innerText = e.target.value;
+  generatePassword(e.target.value);
+}
 
-function clickHandler (e) {
-  passwordLength.value = e.target.value
-  passwordRange.value = e.target.value
+function getAvailableCharacters() {
+  const upperCaseCheckBox = document.getElementById("uppercase").checked;
+  const lowerCaseCheckBox = document.getElementById("lowercase").checked;
+  const numbersCheckBox = document.getElementById("numbers").checked;
+  const specialsCheckBox = document.getElementById("specials").checked;
 
-  // generatePassword(e.target.value)
-  generatedPassword.value = generatePassword(e.target.value)
+  let charactersArray = [
+    ...(upperCaseCheckBox ? UPPERCASE : []),
+    ...(lowerCaseCheckBox ? LOWERCASE : []),
+    ...(numbersCheckBox ? NUMBERS : []),
+    ...(specialsCheckBox ? SYMBOLS : []),
+  ];
+
+  return charactersArray;
 }
 
 function generatePassword(passwordLength) {
-  let generatedPasswordArr = []
-  const allSymbols = LOWERCASE.concat(UPPERCASE.concat(NUMBERS.concat(SYMBOLS)));
+  let availableCharacters = getAvailableCharacters();
+  console.log("availableCharacters=", availableCharacters);
+  let generatedPasswordArr = [];
+
   for (let i = 0; i < passwordLength; i++) {
-    generatedPasswordArr.push(allSymbols[Math.floor(Math.random() * allSymbols.length)])
+    generatedPasswordArr.push(
+      availableCharacters[Math.floor(Math.random() * availableCharacters.length)]
+    );
   }
-  let generatedPasswordStr = generatedPasswordArr.join('')
-  return generatedPasswordStr
+  generatedPassword.value = generatedPasswordArr.join("");
 }

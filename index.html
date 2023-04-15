@@ -4,15 +4,54 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <title>Random Password Generator</title>
   </head>
   <body>
-    <h2>Random Password Generator</h2>
-    <input value="" id="GENERATED-PASSWORD" spellcheck="false" type="text">
-    <div>
-      <input id='password-length' value="6" name="length" step="1" type="number" min="3" max="50">
-      <input id='password-range' type="range" step="1" min="3" max="50"> 
+    <div class="container">
+      <h1>Random Password Generator</h1>
+
+      <div class="generated-password">
+        <label class="generated-label" for="password-generator-display-field"
+          >Generated password:</label
+        >
+        <input
+          id="password-generator-display-field"
+          class="generated-input"
+          value=""
+          spellcheck="false"
+          type="text" />
+        <button class="generated-copy">Copy</button>
+      </div>
+      <div class="password-settings">
+        <div class="length-settings">
+          <label class="generated-label" for="password-length">Password length:</label>
+          <span id="password-length"></span>
+          <button class="button-minus">-</button>
+          <input id="password-range" type="range" step="1" min="1" max="50" />
+          <button class="button-plus">+</button>
+        </div>
+
+        <div class="complexity-settings">
+          <span>Characters used: </span>
+          <div class="custom-checkbox">
+            <input type="checkbox" id="uppercase" checked/>
+            <label for="uppercase">ABC</label>
+          </div>
+          <div class="custom-checkbox">
+            <input type="checkbox" id="lowercase" checked/>
+            <label for="lowercase">abc</label>
+          </div>
+          <div class="custom-checkbox">
+            <input type="checkbox" id="numbers" />
+            <label for="numbers">123</label>
+          </div>
+          <div class="custom-checkbox">
+            <input type="checkbox" id="specials" />
+            <label for="specials">#$&</label>
+          </div>
+        </div>
+      </div>
     </div>
     <script src="/constants.js"></script>
     <script src="/script.js"></script>
