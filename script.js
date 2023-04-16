@@ -3,8 +3,7 @@ const passwordRangeInput = document.getElementById("password-range");
 const copyBtn = document.querySelector(".copy-password-btn");
 const lengthMinusBtn = document.querySelector(".button-minus");
 const lengthPlusBtn = document.querySelector(".button-plus");
-const generatedPassword = document.getElementById("password-generator-display-field");
-
+const generatedPasswordField = document.getElementById("password-generator-display-field");
 const options = document.querySelectorAll("input[type=checkbox]");
 
 options.forEach((option) => {
@@ -13,12 +12,14 @@ options.forEach((option) => {
 
 lengthMinusBtn.addEventListener("click", () => changePasswordLength("-"));
 lengthPlusBtn.addEventListener("click", () => changePasswordLength("+"));
-
-passwordLengthSpan.innerText = passwordRangeInput.value;
 passwordRangeInput.addEventListener("input", changeInputRangeHandler);
+generatedPasswordField.addEventListener("click", copyPassword);
+copyBtn.addEventListener("click", copyPassword);
+
+renderPassword(generatePassword(passwordLengthSpan.innerText));
 
 function optionClickHandler() {
-  generatePassword(passwordRangeInput.value);
+  renderPassword(generatePassword(passwordRangeInput.value));
 
   const hasUpperCase = document.getElementById("uppercase").checked;
   const hasLowerCase = document.getElementById("lowercase").checked;
@@ -42,21 +43,13 @@ function optionClickHandler() {
     : (document.getElementById("specials").disabled = false);
 }
 
-function changePasswordLength(e) {
-  if (e === "-") {
-    passwordRangeInput.value--;
-  } else {
-    passwordRangeInput.value++;
-  }
-  passwordLengthSpan.innerText = passwordRangeInput.value;
-  generatePassword(passwordRangeInput.value);
-  checkLimits(passwordRangeInput.value);
-}
+function changePasswordLength(action) {
+  let passwordLength = passwordRangeInput.value;
+  action === "-" ? passwordLength-- : passwordLength++;
 
-function changeInputRangeHandler(e) {
-  passwordLengthSpan.innerText = e.target.value;
-  generatePassword(e.target.value);
-  checkLimits(e.target.value);
+  passwordRangeInput.value = passwordLength;
+  renderPassword(generatePassword(passwordLength));
+  checkLimits(passwordLength);
 }
 
 function checkLimits(passwordLength) {
@@ -67,46 +60,54 @@ function checkLimits(passwordLength) {
   maxLength ? (lengthPlusBtn.disabled = true) : (lengthPlusBtn.disabled = false);
 }
 
+function changeInputRangeHandler(e) {
+  const passwordLength = e.target.value;
+
+  renderPassword(generatePassword(passwordLength));
+  checkLimits(passwordLength);
+}
+
+function generatePassword(passwordLength) {
+  let availableCharacters = getAvailableCharacters();
+  let generatedPassword = "";
+
+  for (let i = 0; i < passwordLength; i++) {
+    generatedPassword +=
+      availableCharacters[Math.floor(Math.random() * availableCharacters.length)];
+  }
+  return generatedPassword;
+}
+
+function renderPassword(password) {
+  const innerPasswordField = document.createElement("div");
+  innerPasswordField.id = "inner-password-field";
+  innerPasswordField.innerText = password;
+
+  generatedPasswordField.innerHTML = "";
+  generatedPasswordField.append(innerPasswordField);
+  passwordLengthSpan.innerText = password.length;
+  copyBtn.disabled = false;
+  copyBtn.innerHTML = "Copy";
+}
+
 function getAvailableCharacters() {
   const hasUpperCase = document.getElementById("uppercase").checked;
   const hasLowerCase = document.getElementById("lowercase").checked;
   const hasNumbers = document.getElementById("numbers").checked;
   const hasSpecials = document.getElementById("specials").checked;
 
-  let charactersArray = [
+  const availableCharacters = [
     ...(hasUpperCase ? UPPERCASE : []),
     ...(hasLowerCase ? LOWERCASE : []),
     ...(hasNumbers ? NUMBERS : []),
     ...(hasSpecials ? SPECIALS : []),
   ];
 
-  return charactersArray;
+  return availableCharacters;
 }
-
-function generatePassword(passwordLength) {
-  let availableCharacters = getAvailableCharacters();
-  let generatedPasswordArr = [];
-
-  for (let i = 0; i < passwordLength; i++) {
-    generatedPasswordArr.push(
-      availableCharacters[Math.floor(Math.random() * availableCharacters.length)]
-    );
-  }
-  let div = document.createElement("div");
-  div.id = "inner-password-field";
-  div.innerText = generatedPasswordArr.join("");
-  generatedPassword.innerHTML = "";
-  generatedPassword.append(div);
-  copyBtn.disabled = false;
-  copyBtn.innerHTML = "Copy";
-}
-
-copyBtn.addEventListener("click", copyPassword);
 
 function copyPassword() {
-  navigator.clipboard.writeText(document.getElementById('inner-password-field').innerHTML);
+  navigator.clipboard.writeText(document.getElementById("inner-password-field").innerHTML);
   copyBtn.innerHTML = "Copied";
   copyBtn.disabled = true;
 }
-
-generatePassword(25);
