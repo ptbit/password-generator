@@ -1,6 +1,6 @@
 const passwordLengthSpan = document.getElementById("password-length");
 const passwordRangeInput = document.getElementById("password-range");
-const copyBtn = document.querySelector(".generated-copy");
+const copyBtn = document.querySelector(".copy-password-btn");
 const lengthMinusBtn = document.querySelector(".button-minus");
 const lengthPlusBtn = document.querySelector(".button-plus");
 const generatedPassword = document.getElementById("password-generator-display-field");
@@ -98,6 +98,7 @@ function generatePassword(passwordLength) {
   generatedPassword.innerHTML = "";
   generatedPassword.append(div);
   copyBtn.disabled = false;
+  copyBtn.innerHTML = "Copy";
 }
 
 copyBtn.addEventListener("click", copyPassword);
