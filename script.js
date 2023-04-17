@@ -4,7 +4,14 @@ const copyBtn = document.querySelector(".copy-password-btn");
 const lengthMinusBtn = document.querySelector(".button-minus");
 const lengthPlusBtn = document.querySelector(".button-plus");
 const generatedPasswordField = document.getElementById("password-generator-display-field");
+
 const options = document.querySelectorAll("input[type=checkbox]");
+const upperCaseCheckbox = document.getElementById("uppercase");
+const lowerCaseCheckbox = document.getElementById("lowercase");
+const numbersCheckbox = document.getElementById("numbers");
+const specialsCheckbox = document.getElementById("specials");
+
+let passwordLength = 0;
 
 options.forEach((option) => {
   option.addEventListener("click", optionClickHandler);
@@ -16,58 +23,50 @@ passwordRangeInput.addEventListener("input", changeInputRangeHandler);
 generatedPasswordField.addEventListener("click", copyPassword);
 copyBtn.addEventListener("click", copyPassword);
 
-renderPassword(generatePassword(passwordLengthSpan.innerText));
-
 function optionClickHandler() {
-  renderPassword(generatePassword(passwordRangeInput.value));
+  const optionsStatus = [];
+  let optionsStatusSum = 0;
 
-  const hasUpperCase = document.getElementById("uppercase").checked;
-  const hasLowerCase = document.getElementById("lowercase").checked;
-  const hasNumbers = document.getElementById("numbers").checked;
-  const hasSpecials = document.getElementById("specials").checked;
+  options.forEach((option) => {
+    option.disabled = false;
 
-  hasUpperCase && !hasLowerCase && !hasNumbers && !hasSpecials
-    ? (document.getElementById("uppercase").disabled = true)
-    : (document.getElementById("uppercase").disabled = false);
+    let optionStatus = option.checked ? 1 : 0;
+    optionsStatusSum += optionStatus;
+    optionsStatus.push(optionStatus);
+  });
 
-  hasLowerCase && !hasUpperCase && !hasNumbers && !hasSpecials
-    ? (document.getElementById("lowercase").disabled = true)
-    : (document.getElementById("lowercase").disabled = false);
+  if (optionsStatusSum <= 1) {
+    const disabledCheckboxIndex = optionsStatus.indexOf(1);
+    options[disabledCheckboxIndex].disabled = true;
+  }
 
-  hasNumbers && !hasUpperCase && !hasLowerCase && !hasSpecials
-    ? (document.getElementById("numbers").disabled = true)
-    : (document.getElementById("numbers").disabled = false);
-
-  hasSpecials && !hasUpperCase && !hasNumbers && !hasLowerCase
-    ? (document.getElementById("specials").disabled = true)
-    : (document.getElementById("specials").disabled = false);
+  renderPassword(generatePassword());
 }
 
 function changePasswordLength(action) {
-  let passwordLength = passwordRangeInput.value;
   action === "-" ? passwordLength-- : passwordLength++;
 
   passwordRangeInput.value = passwordLength;
-  renderPassword(generatePassword(passwordLength));
-  checkLimits(passwordLength);
+  passwordLengthSpan.innerText = passwordLength;
+
+  renderPassword(generatePassword());
+  checkLimits();
 }
 
-function checkLimits(passwordLength) {
-  const minLength = passwordLength === "1";
-  minLength ? (lengthMinusBtn.disabled = true) : (lengthMinusBtn.disabled = false);
-
-  const maxLength = passwordLength === "50";
-  maxLength ? (lengthPlusBtn.disabled = true) : (lengthPlusBtn.disabled = false);
+function checkLimits() {
+  passwordLength <= 1 ? (lengthMinusBtn.disabled = true) : (lengthMinusBtn.disabled = false);
+  passwordLength >= 50 ? (lengthPlusBtn.disabled = true) : (lengthPlusBtn.disabled = false);
 }
 
 function changeInputRangeHandler(e) {
-  const passwordLength = e.target.value;
+  passwordLength = +e.target.value;
+  passwordLengthSpan.innerText = passwordLength;
 
-  renderPassword(generatePassword(passwordLength));
-  checkLimits(passwordLength);
+  checkLimits();
+  renderPassword(generatePassword());
 }
 
-function generatePassword(passwordLength) {
+function generatePassword() {
   let availableCharacters = getAvailableCharacters();
   let generatedPassword = "";
 
@@ -79,35 +78,33 @@ function generatePassword(passwordLength) {
 }
 
 function renderPassword(password) {
-  const innerPasswordField = document.createElement("div");
-  innerPasswordField.id = "inner-password-field";
+  const innerPasswordField = document.getElementById("inner-password-field");
   innerPasswordField.innerText = password;
 
-  generatedPasswordField.innerHTML = "";
-  generatedPasswordField.append(innerPasswordField);
-  passwordLengthSpan.innerText = password.length;
   copyBtn.disabled = false;
   copyBtn.innerHTML = "Copy";
 }
 
 function getAvailableCharacters() {
-  const hasUpperCase = document.getElementById("uppercase").checked;
-  const hasLowerCase = document.getElementById("lowercase").checked;
-  const hasNumbers = document.getElementById("numbers").checked;
-  const hasSpecials = document.getElementById("specials").checked;
-
   const availableCharacters = [
-    ...(hasUpperCase ? UPPERCASE : []),
-    ...(hasLowerCase ? LOWERCASE : []),
-    ...(hasNumbers ? NUMBERS : []),
-    ...(hasSpecials ? SPECIALS : []),
+    ...(upperCaseCheckbox.checked ? UPPERCASE : []),
+    ...(lowerCaseCheckbox.checked ? LOWERCASE : []),
+    ...(numbersCheckbox.checked ? NUMBERS : []),
+    ...(specialsCheckbox.checked ? SPECIALS : []),
   ];
 
   return availableCharacters;
 }
 
 function copyPassword() {
-  navigator.clipboard.writeText(document.getElementById("inner-password-field").innerHTML);
+  navigator.clipboard.writeText(document.getElementById("inner-password-field").innerText);
   copyBtn.innerHTML = "Copied";
   copyBtn.disabled = true;
 }
+
+function start() {
+  passwordLength = +passwordLengthSpan.innerText;
+  renderPassword(generatePassword(passwordLengthSpan.innerText));
+}
+
+start();
