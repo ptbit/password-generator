@@ -158,10 +158,12 @@ button[lang-selector] {
   background-position: center;
   background-repeat: no-repeat;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: all 0.2s;
+  opacity: 0.8;
 }
 button[lang-selector]:hover {
   transform: scale(1.1);
+  opacity: 1;
 }
 button[lang-selector="en"] {
   background-image: url("./assets/flag-gb.svg");
