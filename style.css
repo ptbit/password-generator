@@ -142,6 +142,33 @@ input[type="checkbox"] {
 input[type="checkbox"]:disabled {
   cursor: no-drop;
 }
+.lang-settings {
+  margin-top: var(--medium-spacing);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+button[lang-selector] {
+  width: 50px;
+  height: 34px;
+  border: none;
+  background-color: transparent;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+button[lang-selector]:hover {
+  transform: scale(1.1);
+}
+button[lang-selector="en"] {
+  background-image: url("./assets/flag-gb.svg");
+}
+button[lang-selector="ua"] {
+  background-image: url("./assets/flag-ua.svg");
+}
 
 @media (max-width: 650px) {
   h1 {

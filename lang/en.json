@@ -1,0 +1,8 @@
+{
+  "title": "Random Password Generator",
+  "h1": "Random Password Generator",
+  "generated-password": "Generated password:",
+  "length-label": "Password length:",
+  "option-label": "Characters used:",
+  "lang-label": "Language:"
+}

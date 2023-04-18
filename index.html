@@ -5,15 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <title>Random Password Generator</title>
+    <title lang-key="title"></title>
   </head>
 
   <body>
     <div class="main-container">
-      <h1>Random Password Generator</h1>
+      <h1 lang-key="h1"></h1>
 
       <div class="generated-password-container">
-        <label for="password-generator-display-field">Generated password:</label>
+        <label lang-key="generated-password" for="password-generator-display-field"></label>
         <div id="password-generator-display-field">
           <div id="inner-password-field"></div>
         </div>
@@ -23,7 +23,7 @@
       <div class="password-settings">
         <div class="length-settings">
           <div class="length-settings-title">
-            <label for="password-length">Password length:</label>
+            <label for="password-length" lang-key="length-label"></label>
             <span id="password-length">26</span>
           </div>
           <div class="length-settings-buttons">
@@ -34,7 +34,7 @@
         </div>
 
         <div class="complexity-settings">
-          <span>Characters used: </span>
+          <span lang-key="option-label"></span>
           <div class="checkbox-container">
             <input type="checkbox" id="uppercase" checked />
             <label for="uppercase">ABC</label>
@@ -51,6 +51,11 @@
             <input type="checkbox" id="specials" />
             <label for="specials">#$&</label>
           </div>
+        </div>
+        <div class="lang-settings">
+          <span lang-key="lang-label"></span>
+          <button lang-selector="en"></button>
+          <button lang-selector="ua"></button>
         </div>
       </div>
     </div>

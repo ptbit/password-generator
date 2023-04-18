@@ -10,18 +10,35 @@ const upperCaseCheckbox = document.getElementById("uppercase");
 const lowerCaseCheckbox = document.getElementById("lowercase");
 const numbersCheckbox = document.getElementById("numbers");
 const specialsCheckbox = document.getElementById("specials");
+const changeLangButtons = document.querySelectorAll("[lang-selector]");
 
+const defaultLocale = "en";
+let locale;
+let translations = {};
 let passwordLength = 0;
 
-options.forEach((option) => {
-  option.addEventListener("click", optionClickHandler);
-});
+document.addEventListener("DOMContentLoaded", () => {
+  options.forEach((option) => {
+    option.addEventListener("click", optionClickHandler);
+  });
 
-lengthMinusBtn.addEventListener("click", () => changePasswordLength("-"));
-lengthPlusBtn.addEventListener("click", () => changePasswordLength("+"));
-passwordRangeInput.addEventListener("input", changeInputRangeHandler);
-generatedPasswordField.addEventListener("click", copyPassword);
-copyBtn.addEventListener("click", copyPassword);
+  lengthMinusBtn.addEventListener("click", () => changePasswordLength("-"));
+  lengthPlusBtn.addEventListener("click", () => changePasswordLength("+"));
+  passwordRangeInput.addEventListener("input", changeInputRangeHandler);
+  generatedPasswordField.addEventListener("click", copyPassword);
+  copyBtn.addEventListener("click", copyPassword);
+
+  passwordLength = +passwordLengthSpan.innerText;
+  renderPassword(generatePassword(passwordLengthSpan.innerText));
+
+  setLocale(defaultLocale);
+  
+  changeLangButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      setLocale(btn.attributes[0].value)
+    })
+  })
+});
 
 function optionClickHandler() {
   const optionsStatus = [];
@@ -102,9 +119,27 @@ function copyPassword() {
   copyBtn.disabled = true;
 }
 
-function start() {
-  passwordLength = +passwordLengthSpan.innerText;
-  renderPassword(generatePassword(passwordLengthSpan.innerText));
+async function setLocale(newLocale) {
+  if (newLocale === locale) return;
+
+  const newTranslations = await fetchTranslationsFor(newLocale);
+  locale = newLocale;
+  translations = newTranslations;
+
+  translatePage();
 }
 
-start();
+async function fetchTranslationsFor(newLocale) {
+  const response = await fetch(`/lang/${newLocale}.json`);
+  return await response.json();
+}
+
+function translatePage() {
+  document.querySelectorAll("[lang-key]").forEach(translateElement);
+}
+
+function translateElement(element) {
+  const key = element.getAttribute("lang-key");
+  const translation = translations[key];
+  element.innerText = translation;
+}
