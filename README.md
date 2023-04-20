@@ -9,7 +9,7 @@ To view demo: **[click here](https://ptbit.github.io/password-generator/)**
 ⚡️ Valid HTML5 & CSS3\
 ⚡️ Auto work (no need click generate btn)\
 ⚡️ Most popular options\
-⚡️ Multi language
+⚡️ Multi language\
 ⚡️ Vanila JS
 
 ### Technologies used: 
