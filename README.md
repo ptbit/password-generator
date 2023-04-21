@@ -5,7 +5,7 @@
 To view demo: **[click here](https://ptbit.github.io/password-generator/)** 
 
 ### Description:
-Auto-working service for generate random strong password according to specified parameters such as length and required characters.
+Auto-working app for generate random strong password according to specified parameters such as length and required characters.
 
 ### Feature:
 ⚡️ Fully Responsive\
