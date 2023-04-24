@@ -10,7 +10,7 @@ Auto-working app for generate random strong password according to specified para
 ### Feature:
 ⚡️ Fully Responsive\
 ⚡️ Valid HTML5 & CSS3\
-⚡️ Vanila JavaScript\
+⚡️ Vanilla JavaScript\
 ⚡️ Auto work (no need click generate btn)\
 ⚡️ Most popular options\
 ⚡️ Multi language\
